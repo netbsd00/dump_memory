@@ -1,9 +1,34 @@
 #include <stdio.h>
+#include <stdint.h>
 
 #define D(s...)	printf(s)
 
 typedef unsigned char	UINT8;
 typedef	unsigned short	UINT16;
+
+void memory_dump32(const void *memory, size_t size)
+{
+    const uint32_t *data = (const uint32_t *)memory;
+    size_t num_elements = size / 4; // 4바이트 단위로 계산
+
+    printf("Address          Data\n");
+    printf("-------------------------------------------------------------\n");
+
+    for (size_t i = 0; i < num_elements; i++)
+    {
+        if (i % 4 == 0)
+        { // 4개씩 출력
+            printf("0x%08X  ", (unsigned int)((uintptr_t)data + i * 4));
+        }
+
+        printf("%08X ", data[i]);
+
+        if ((i + 1) % 4 == 0 || i == num_elements - 1)
+        {
+            printf("\n");
+        }
+    }
+}
 
 void dump_memory(const UINT8 *data_ptr, const UINT16 size) {
 	UINT16 i = 0;
